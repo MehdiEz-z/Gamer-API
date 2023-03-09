@@ -27,10 +27,16 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'delete every product']);
         Permission::create(['name' => 'delete my product']);
 
+        // Create permissions for Categories
+        Permission::create(['name' => 'show category']);
+        Permission::create(['name' => 'add category']);
+        Permission::create(['name' => 'edit category']);
+        Permission::create(['name' => 'delete category']);
+
         Role::create(['name' => 'admin'])
             ->givePermissionTo(Permission::all());
 
-        Role::create(['name' => 'vendor'])
+        Role::create(['name' => 'seller'])
             ->givePermissionTo(
                 'add product',
                 'edit my product',

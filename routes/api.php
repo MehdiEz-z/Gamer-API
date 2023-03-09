@@ -18,28 +18,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::post('user/{user}', [UpdateProfileController::class, 'UpdateProfile']);
 
-// Products
-Route::group(['controller' => ProductController::class], function (){
-    Route::get('products', 'index');
-    Route::post('products', 'store');
-    Route::get('product/{id}', 'show');
-    Route::put('product/{id}', 'update');
-    Route::delete('product/{id}', 'destroy');
+
+Route::group(['middleware'=>'auth:sanctum'], function(){
+    // Products
+    Route::group(['controller' => ProductController::class], function (){
+        Route::get('products', 'index');
+        Route::post('products', 'store')->middleware('permission:add product');
+        Route::get('product/{id}', 'show')->middleware('permission:show product');
+        Route::put('product/{id}', 'update')->middleware('permission:edit every product|edit my category');
+        Route::delete('product/{id}', 'destroy')->middleware('permission:delete every product|delete my product');
+    });
+    // Categories
+    Route::group(['controller' => CategoryController::class], function () {
+        Route::get('categories', 'index')->middleware('permission:show category');
+        Route::post('categories', 'store')->middleware('permission:add category');
+        Route::get('category/{id}', 'show')->middleware('permission:show category');
+        Route::put('category/{id}', 'update')->middleware('permission:edit category');
+        Route::delete('category/{id}', 'destroy')->middleware('permission:delete category');
+    });
 });
-// Categories
-Route::group(['controller' => CategoryController::class], function (){
-    Route::get('categories', 'index');
-    Route::post('categories', 'store');
-    Route::get('category/{id}', 'show');
-    Route::put('category/{id}', 'update');
-    Route::delete('category/{id}', 'destroy');
-});
+
+
+
+

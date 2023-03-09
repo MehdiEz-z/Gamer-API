@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -61,7 +62,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
         $product = Product::find($id);
+
+        if(!$user->can('edit every product') && $user->id != $product->user_id){
+            return response()->json(['message' => 'Sorry, this is not your product!']);
+        }
+
         $product->update($request->all());
         return response()->json([
             'status' => true,
@@ -74,11 +81,17 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\jsonResponse
      */
     function destroy($id)
     {
+        $user = Auth::user();
         $product = Product::find($id);
+
+        if(!$user->can('delete every product') && $user->id != $product->user_id){
+            return response()->json(['message' => 'Sorry, this is not your product!']);
+        }
+
         $product->delete();
         return response()->json([
             'status' => true,
