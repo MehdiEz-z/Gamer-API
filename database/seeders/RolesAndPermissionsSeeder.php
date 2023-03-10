@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 //use Spatie\Permission\Models\Role;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -32,6 +34,12 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'add category']);
         Permission::create(['name' => 'edit category']);
         Permission::create(['name' => 'delete category']);
+
+        // Create permissions for Roles
+        Permission::create(['name' => 'show role']);
+        Permission::create(['name' => 'add role']);
+        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'delete role']);
 
         Role::create(['name' => 'admin'])
             ->givePermissionTo(Permission::all());

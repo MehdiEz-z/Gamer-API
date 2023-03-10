@@ -27,10 +27,16 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('user/{user}', [UpdateProfileController::class, 'UpdateProfile']);
 
+Route::group(['controller' => ChangePasswordController::class], function (){
+    Route::post('forgot-password', 'sendResetToken');
+    Route::post('reset-password', 'resetPassword');
+});
+
 
 Route::group(['middleware'=>'auth:sanctum'], function(){
     // Products
-    Route::group(['controller' => ProductController::class], function (){
+    Route::group(['controller' => ProductController::class], function ()
+    {
         Route::get('products', 'index');
         Route::post('products', 'store')->middleware('permission:add product');
         Route::get('product/{id}', 'show')->middleware('permission:show product');
@@ -38,7 +44,8 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
         Route::delete('product/{id}', 'destroy')->middleware('permission:delete every product|delete my product');
     });
     // Categories
-    Route::group(['controller' => CategoryController::class], function () {
+    Route::group(['controller' => CategoryController::class], function ()
+    {
         Route::get('categories', 'index')->middleware('permission:show category');
         Route::post('categories', 'store')->middleware('permission:add category');
         Route::get('category/{id}', 'show')->middleware('permission:show category');
@@ -46,12 +53,13 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
         Route::delete('category/{id}', 'destroy')->middleware('permission:delete category');
     });
     // Roles
-    Route::group(['controller' => RoleController::class], function(){
-        Route::get('roles', 'index');
-        Route::post('role', 'store');
-        Route::get('role/{id}', 'show');
-        Route::put('role/{id}', 'update');
-        Route::delete('role/{id}', 'destroy');
+    Route::group(['controller' => RoleController::class], function()
+    {
+        Route::get('roles', 'index')->middleware('permission:show role');
+        Route::post('role', 'store')->middleware('permission:add role');
+        Route::get('role/{id}', 'show')->middleware('permission:show role');
+        Route::put('role/{id}', 'update')->middleware('permission:edit role');
+        Route::delete('role/{id}', 'destroy')->middleware('permission:delete role');
     });
 });
 
