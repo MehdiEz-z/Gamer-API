@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+//use http\Client\Curl\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -88,6 +90,20 @@ class RoleController extends Controller
             'message' => "({$oldRole}) was deleted!"
         ]);
     }
+
+    public function assignRole(Request $request, $id)
+    {
+        $user = User::find($id);
+        if(!$user){
+            return response()->json(['message' => 'This user doesn\'t exist!']);
+        }
+        $user->assignRole($request->role);
+        return response()->json([
+            'status' => true,
+            'message' => 'Role assigned successfully!',
+        ]);
+    }
+
 
 
 }

@@ -34,6 +34,9 @@ Route::group(['controller' => ResetPasswordController::class], function (){
     // Reset password
     Route::post('reset-password', 'resetPassword')->middleware('guest')->name('password.update');
 
+    Route::get('reset-password/{token}', function (string $token) {
+         return $token;
+     })->middleware('guest')->name('password.reset');
 });
 
 
@@ -64,6 +67,7 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
         Route::get('role/{id}', 'show')->middleware('permission:show role');
         Route::put('role/{id}', 'update')->middleware('permission:edit role');
         Route::delete('role/{id}', 'destroy')->middleware('permission:delete role');
+        Route::post('role/{id}', 'assignRole')->middleware('permission:assign role');
     });
 });
 
