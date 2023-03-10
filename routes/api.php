@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UpdateProfileController;
@@ -27,9 +28,12 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('user/{user}', [UpdateProfileController::class, 'UpdateProfile']);
 
-Route::group(['controller' => ChangePasswordController::class], function (){
-    Route::post('forgot-password', 'sendResetToken');
-    Route::post('reset-password', 'resetPassword');
+Route::group(['controller' => ResetPasswordController::class], function (){
+    // Request password reset link
+    Route::post('forgot-password', 'sendResetLinkEmail')->middleware('guest')->name('password.email');
+    // Reset password
+    Route::post('reset-password', 'resetPassword')->middleware('guest')->name('password.update');
+
 });
 
 
