@@ -2,40 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\jsonResponse
      */
     public function index()
     {
-        //
+        $roles = Role::select('name')->get();
+        return response()->json([
+            'status' => 'success',
+            'roles' => $roles,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\jsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $role = Role::create($request->all());
+        return response()->json([
+            'status' => true,
+            'message' => "'{$role->name}' role added successfully!",
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\jsonResponse
      */
     public function show($id)
     {
-        //
+        $role = Role::find($id);
+        if(!$role){
+            return response()->json(['message' => 'Sorry, this role doesn\'t exist!']);
+        }
+        return response()->json([
+            'role' => $role->name
+        ]);
     }
 
     /**
@@ -43,21 +59,35 @@ class RoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\jsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = Role::find($id);
+        $oldRole = $role->name;
+
+        $role->update($request->all());
+        return response()->json([
+            'status' => true,
+            'role' => "({$oldRole}) was edited to ({$role->name})"
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\jsonResponse
      */
     public function destroy($id)
     {
-        //
+        $role = Role::find($id);
+        $oldRole = $role->name;
+        $role->delete();
+        return response()->json([
+            'message' => "({$oldRole}) was deleted!"
+        ]);
     }
+
+
 }

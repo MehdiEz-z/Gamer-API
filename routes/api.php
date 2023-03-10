@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UpdateProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,8 +45,16 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
         Route::put('category/{id}', 'update')->middleware('permission:edit category');
         Route::delete('category/{id}', 'destroy')->middleware('permission:delete category');
     });
+    // Roles
+    Route::group(['controller' => RoleController::class], function(){
+        Route::get('roles', 'index');
+        Route::post('role', 'store');
+        Route::get('role/{id}', 'show');
+        Route::put('role/{id}', 'update');
+        Route::delete('role/{id}', 'destroy');
+    });
 });
 
 
 
-
+Route::get('/search/{category}', [ProductController::class, 'search']);

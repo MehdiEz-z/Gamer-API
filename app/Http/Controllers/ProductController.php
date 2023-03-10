@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +32,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = Product::create($request->all());
+        $user = Auth::user();
+
+        $product = Product::create($request->all() + ['user_id' => $user->id]);
+
         return response()->json([
             'status' => true,
             'message' => 'Product added successfully!',
@@ -97,5 +102,17 @@ class ProductController extends Controller
             'status' => true,
             'message' => 'Product delete successfully!',
         ], 200);
+    }
+
+    public function search($category)
+    {
+        $products = Product::whereHas("category", function (Builder $query){
+            $query->where("name", 'like', "$category%");
+        })->get();
+
+        //->where('category', 'like', "$category%")->get();
+        return response()->json([
+            'product' => $products,
+        ]);
     }
 }
