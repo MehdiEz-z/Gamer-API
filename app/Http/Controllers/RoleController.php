@@ -94,7 +94,8 @@ class RoleController extends Controller
     public function assignRole(Request $request, $id)
     {
         $user = User::find($id);
-        if(!$user){
+        if(!$user)
+        {
             return response()->json(['message' => 'This user doesn\'t exist!']);
         }
         $user->assignRole($request->role);

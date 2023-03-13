@@ -106,13 +106,16 @@ class ProductController extends Controller
 
     public function search($category)
     {
-        $products = Product::whereHas("category", function (Builder $query){
-            $query->where("name", 'like', "$category%");
-        })->get();
-
-        //->where('category', 'like', "$category%")->get();
-        return response()->json([
-            'product' => $products,
-        ]);
+//        $products = Product::whereHas("category", function (Builder $query){
+//            $query->where("name", 'like', "$category%");
+//        })->get();
+//
+//        //->where('category', 'like', "$category%")->get();
+//        return response()->json([
+//            'product' => $products,
+//        ]);
+    }
+    public function test(){
+        return 'test';
     }
 }
