@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -26,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('user/{user}', [UpdateProfileController::class, 'UpdateProfile']);
+
 
 Route::group(['controller' => ResetPasswordController::class], function (){
     // Request password reset link
@@ -41,8 +42,11 @@ Route::group(['controller' => ResetPasswordController::class], function (){
 });
 
 
-Route::group(['middleware'=>'auth:sanctum'], function(){
-
+Route::group(['middleware'=>'auth:sanctum'], function()
+{
+    // Profile
+    Route::put('user/{user}', [ProfileController::class, 'updateProfile'])->middleware('permission:edit my profile|edit every profile');
+    Route::delete('user/{user}', [ProfileController::class, 'deleteProfile'])->middleware('permission:delete my profile|delete every profile');
 
     // Products
     Route::group(['controller' => ProductController::class], function ()

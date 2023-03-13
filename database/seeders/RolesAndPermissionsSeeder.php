@@ -22,7 +22,6 @@ class RolesAndPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Create permissions for Products
-        Permission::create(['name' => 'show product']);
         Permission::create(['name' => 'add product']);
         Permission::create(['name' => 'edit every product']);
         Permission::create(['name' => 'edit my product']);
@@ -42,6 +41,13 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'delete role']);
         Permission::create(['name' => 'assign role']);
 
+        // Create permissions for Profile
+        Permission::create(['name' => 'edit my profile']);
+        Permission::create(['name' => 'edit every profile']);
+        Permission::create(['name' => 'delete my profile']);
+        Permission::create(['name' => 'delete every profile']);
+
+
         Role::create(['name' => 'admin'])
             ->givePermissionTo(Permission::all());
 
@@ -49,12 +55,15 @@ class RolesAndPermissionsSeeder extends Seeder
             ->givePermissionTo(
                 'add product',
                 'edit my product',
-                'delete my product'
+                'delete my product',
+                'edit my profile',
+                'delete my profile'
             );
 
-//        Role::create(['name' => 'user'])
-//            ->givePermissionsTo(
-//                'show product'
-//            );
+        Role::create(['name' => 'user'])
+            ->givePermissionTo(
+                'edit my profile',
+                'delete my profile'
+            );
     }
 }
