@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ProductController;
@@ -76,7 +77,12 @@ Route::group(['middleware'=>'auth:sanctum'], function()
         Route::delete('role/{id}', 'destroy')->middleware('permission:delete role');
         Route::post('assign-role/{id}', 'assignRole')->middleware('permission:assign role');
         Route::post('remove-role/{id}', 'removeRole')->middleware('permission:assign role');
+
     });
+    Route::post('assign-permission/{role}', [PermissionController::class,'assignPermissionToRole'])->middleware('permission:assign permission');
+    Route::delete('remove-permission/{role}', [PermissionController::class,'removePermissionFromRole'])->middleware('permission:assign permission');
+
+
 });
 
 
