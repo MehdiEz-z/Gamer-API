@@ -98,7 +98,9 @@ class RoleController extends Controller
         {
             return response()->json(['message' => 'This user doesn\'t exist!']);
         }
-        $user->assignRole($request->role);
+
+        $user->syncRoles([$request->name]);
+
         return response()->json([
             'status' => true,
             'message' => 'Role assigned successfully!',

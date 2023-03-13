@@ -12,9 +12,9 @@ class ProfileController extends Controller
 {
     public function updateProfile(UpdateProfileRequest $request, User $user)
     {
-        $logedInUser = Auth::user();
+        $loggedInUser = Auth::user();
 
-        if (!$logedInUser->can('edit every profile') && $logedInUser->id != $user->id){
+        if (!$loggedInUser->can('edit every profile') && $loggedInUser->id != $user->id){
             return response()->json(['message' => "You can't edit this profile"], 403);
         }
 
@@ -30,6 +30,7 @@ class ProfileController extends Controller
     public function deleteProfile(User $user)
     {
         $logedInUser = Auth::user();
+
         if (!$logedInUser->can('delete every profile') && $logedInUser->id != $user->id){
             return response()->json([
                 '=======' => "============ Delete Profile ============",
@@ -39,7 +40,7 @@ class ProfileController extends Controller
 
         $user->delete();
         return response()->json([
-            'status' => true,
+            '=======' => "================= Delete Profile =================",
             'message' => 'Profile deleted successfully!',
         ], 200);
     }
