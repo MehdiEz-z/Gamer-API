@@ -75,7 +75,7 @@ Route::group(['middleware'=>'auth:sanctum'], function()
         Route::put('role/{id}', 'update')->middleware('permission:edit role');
         Route::delete('role/{id}', 'destroy')->middleware('permission:delete role');
         Route::post('assign-role/{id}', 'assignRole')->middleware('permission:assign role');
-        Route::post('remove-role/{id}', 'removeRole')->middleware('permission:remove role');
+        Route::post('remove-role/{id}', 'removeRole')->middleware('permission:assign role');
     });
 });
 

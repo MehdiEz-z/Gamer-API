@@ -107,6 +107,28 @@ class RoleController extends Controller
         ]);
     }
 
+    public function removeRole(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['Message' => "This user doesn't exist!"]);
+        }
+
+        $roleName = $request->name;
+
+        if(!$user->hasRole($roleName)){
+            return response()->json(['Message' => "This user doesn't have ({$roleName}) role!"]);
+        }
+
+        $user->removeRole($roleName);
+
+        return response()->json([
+            '=======' => "==================== Remove Role ====================",
+            'Message' => 'Role removed successfully!',
+        ]);
+    }
+
 
 
 }
