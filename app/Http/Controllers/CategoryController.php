@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         return response()->json([
-            'status' => true,
+            '==========' => "============== Categories ==============",
             'categories' => $categories,
         ]);
     }
@@ -28,13 +30,11 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\jsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
         $category = Category::create($request->all());
         return response()->json([
-            'status' => true,
-            'message' => 'New category added successfully!',
-            'category' => $category->name,
+            'Message' => "Category ({$category->name}) added successfully!",
         ], 200);
     }
 
@@ -48,7 +48,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         if(!$category){
-            return response()->json(['message' => 'This category doesn\'t exist!']);
+            return response()->json(['message' => "Category with (id:{$id}) doesn't exist!"]);
         }
         return response()->json([
             'Category' => $category->name,
@@ -62,18 +62,20 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\jsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $category = Category::find($id);
-        $category->update($request->all());
-        if(!$category){
-            return response()->json(['message' => 'Sorry this cateogyr doesn\'t exist!']);
-        }
-        return response()->json([
-            'status' => true,
-            'message' => 'Category updated successfully!',
-            'category' => $category->name,
 
+        if(!$category){
+            return response()->json(['message' => "Category with (id:{$id}) doesn't exist!"]);
+        }
+        $oldCategory = $category->name;
+
+        $category->update($request->all());
+
+        return response()->json([
+            '=======' => "============== Category Updated ==============",
+            'Message' => "Category ({$oldCategory}) updated to ({$category->name}) successfully!",
         ]);
     }
 
@@ -86,13 +88,16 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
+
         if(!$category){
-            return response()->json(['message' => 'Sorry this category doesn\'t exist!']);
+            return response()->json(['message' => "Category with (id:{$id}) doesn't exist!"]);
         }
+
         $category->delete();
+
         return response()->json([
-            'message' => 'Category deleted successfully!',
-            'category' => $category->name
+            '=======' => '============= Category Deleted =============',
+            'message' => "Category ({$category->name}) deleted successfully!",
         ], 200);
     }
 }
