@@ -112,15 +112,11 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function search($category)
+    public function filterByCategory($category_name)
     {
-//        $products = Product::whereHas("category", function (Builder $query){
-//            $query->where("name", 'like', "$category%");
-//        })->get();
-//
-//        //->where('category', 'like', "$category%")->get();
-//        return response()->json([
-//            'product' => $products,
-//        ]);
+        $category = Category::where('name', $category_name)->firstOrFail();
+        $products = Product::where('category_id', $category->id)->get();
+        return response()->json($products);
+
     }
 }

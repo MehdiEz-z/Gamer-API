@@ -75,5 +75,4 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
 });
 
 
-Route::get('search/{category}', [ProductController::class, 'search']);
-Route::get('test', [ProductController::class, 'test']);
+Route::get('filter/{category_name}', [ProductController::class, 'filterByCategory']);
