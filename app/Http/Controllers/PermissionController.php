@@ -10,7 +10,6 @@ class PermissionController extends Controller
     public function assignPermissionToRole(Request $request, $role)
     {
         $permissions = $request->permissions;
-
         $role = Role::where('name', $role)->firstOrFail();
 
         $role->syncPermissions($permissions);
@@ -24,6 +23,7 @@ class PermissionController extends Controller
 
     public function removePermissionFromRole(Request $request, $roleName)
     {
+
         $permissions = $request->permissions;
 
         $role = Role::where('name', $roleName)->firstOrFail();

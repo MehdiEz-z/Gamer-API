@@ -7,7 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UpdateProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +47,9 @@ Route::group(['middleware'=>'auth:sanctum'], function()
     // Profile
     Route::put('user/{user}', [ProfileController::class, 'updateProfile'])->middleware('permission:edit my profile|edit every profile');
     Route::delete('user/{user}', [ProfileController::class, 'deleteProfile'])->middleware('permission:delete my profile|delete every profile');
+    Route::post('logout', [ProfileController::class,'logout']);
+    Route::post('refresh', [ProfileController::class,'refresh']);
+
 
     // Products
     Route::group(['controller' => ProductController::class], function ()
@@ -81,8 +83,6 @@ Route::group(['middleware'=>'auth:sanctum'], function()
     });
     Route::post('assign-permission/{role}', [PermissionController::class,'assignPermissionToRole'])->middleware('permission:assign permission');
     Route::delete('remove-permission/{role}', [PermissionController::class,'removePermissionFromRole'])->middleware('permission:assign permission');
-
-
 });
 
 

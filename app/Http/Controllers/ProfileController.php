@@ -19,6 +19,7 @@ class ProfileController extends Controller
         }
 
         $request['password'] = Hash::make($request->password);
+
         $user->update($request->all());
 
         return response([
@@ -33,15 +34,36 @@ class ProfileController extends Controller
 
         if (!$logedInUser->can('delete every profile') && $logedInUser->id != $user->id){
             return response()->json([
-                '=======' => "============ Delete Profile ============",
+
                 'Error' => "You can't delete this profile"
             ], 403);
         }
 
         $user->delete();
         return response()->json([
-            '=======' => "================= Delete Profile =================",
+
             'message' => 'Profile deleted successfully!',
         ], 200);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully logged out',
+        ]);
+    }
+
+    public function refresh()
+    {
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::user(),
+            'authorisation' => [
+                'token' => Auth::refresh(),
+                'type' => 'bearer',
+            ]
+        ]);
     }
 }
