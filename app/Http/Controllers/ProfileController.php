@@ -19,11 +19,9 @@ class ProfileController extends Controller
         }
 
         $request['password'] = Hash::make($request->password);
-
         $user->update($request->all());
 
         return response([
-            '========' => '================= Update Profile ==================',
             'Message' => 'Your profile updated successfully!',
         ], 200);
     }

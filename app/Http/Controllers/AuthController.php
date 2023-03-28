@@ -24,7 +24,6 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            '====' => "================== New Account Created ==================",
             'Name' => $user->name,
             'Email' => $user->email,
             'Created at' => $user->created_at,
@@ -43,7 +42,6 @@ class AuthController extends Controller
         $token = auth()->user()->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            '========' => '================ Welcome Back ================',
             'username' => $user->name,
             'email' => $user->email,
             'access_token' => $token,

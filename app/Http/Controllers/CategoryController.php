@@ -19,7 +19,6 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         return response()->json([
-            '==========' => "============== Categories ==============",
             'categories' => $categories,
         ]);
     }
@@ -74,7 +73,6 @@ class CategoryController extends Controller
         $category->update($request->all());
 
         return response()->json([
-            '=======' => "============== Category Updated ==============",
             'Message' => "Category ({$oldCategory}) updated to ({$category->name}) successfully!",
         ]);
     }
@@ -96,7 +94,6 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json([
-            '=======' => '============= Category Deleted =============',
             'message' => "Category ({$category->name}) deleted successfully!",
         ], 200);
     }

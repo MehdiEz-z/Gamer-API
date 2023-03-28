@@ -24,7 +24,6 @@ class ProductController extends Controller
         $products = Product::all();
 
         return response()->json([
-            '========' => '================== Display Products : ==================',
             'Products' => $products,
         ]);
     }
@@ -66,7 +65,24 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\jsonResponse
      */
+    public function update(UpdateProductRequest $request, $id)
+    {
+        $user = Auth::user();
+        $product = Product::find($id);
 
+        if(!$product){
+            return response()->json(['message' => "Product with (id : {$id} doesn't exist!)"]);
+        }
+        if(!$user->can('edit every product') && $user->id != $product->user_id){
+            return response()->json(['message' => "Can't update a product that isn't yours!"]);
+        }
+
+        $product->update($request->all());
+
+        return response()->json([   
+            'product' => $product,
+        ], 200);
+    }
 
     /**
      * Remove the specified resource from storage.

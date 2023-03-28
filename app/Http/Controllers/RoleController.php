@@ -124,7 +124,6 @@ class RoleController extends Controller
         $user->removeRole($roleName);
 
         return response()->json([
-            '=======' => "==================== Remove Role ====================",
             'Message' => 'Role removed successfully!',
         ]);
     }

@@ -56,8 +56,8 @@ Route::group(['middleware'=>'auth:sanctum'], function()
     {
         Route::get('products', 'index');
         Route::post('product', 'store')->middleware('permission:add product');
-        Route::get('product/{id}', 'show')->middleware('permission:show product');
-        Route::put('product/{id}', 'update')->middleware('permission:edit every product|edit my category');
+        Route::get('product/{id}', 'show');
+        Route::put('product/{id}', 'update')->middleware('permission:edit every product|edit my product');
         Route::delete('product/{id}', 'destroy')->middleware('permission:delete every product|delete my product');
     });
     // Categories
